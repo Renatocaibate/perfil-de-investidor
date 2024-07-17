@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Análise de Perfil de Investidor</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: auto; padding: 20px; }
+        .question { margin-bottom: 20px; }
+        .signature { margin-top: 40px; }
+        .signature-line { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análise de Perfil de Investidor</h1>
+        <form id="investorForm">
+            <!-- Identificação do cliente -->
+            <div class="question">
+                <label>Nome do Cliente:</label><br>
+                <input type="text" name="nome" required>
+            </div>
+            <div class="question">
+                <label>CPF:</label><br>
+                <input type="text" name="cpf" required>
+            </div>
+            <div class="question">
+                <label>Data de Nascimento:</label><br>
+                <input type="date" name="dataNascimento" required>
+            </div>
+            <div class="question">
+                <label>Assinatura:</label><br>
+                <input type="text" name="assinatura" required>
+            </div>
+            <!-- Perguntas do formulário -->
+            <div class="question">
+                <label>Qual sua idade?</label><br>
+                <input type="radio" name="idade" value="3" required> Menos de 30 anos<br>
+                <input type="radio" name="idade" value="2" required> Entre 30 e 45 anos<br>
+                <input type="radio" name="idade" value="1" required> Entre 46 e 60 anos<br>
+                <input type="radio" name="idade" value="0" required> Mais de 60 anos<br>
+            </div>
+            <div class="question">
+                <label>Qual seu nível de conhecimento sobre investimentos?</label><br>
+                <input type="radio" name="conhecimento" value="0" required> Nenhum conhecimento<br>
+                <input type="radio" name="conhecimento" value="1" required> Básico<br>
+                <input type="radio" name="conhecimento" value="2" required> Intermediário<br>
+                <input type="radio" name="conhecimento" value="3" required> Avançado<br>
+            </div>
+            <div class="question">
+                <label>Qual é o seu objetivo principal ao investir?</label><br>
+                <input type="radio" name="objetivo" value="0" required> Preservação de capital<br>
+                <input type="radio" name="objetivo" value="1" required> Aumento de patrimônio com segurança<br>
+                <input type="radio" name="objetivo" value="3" required> Aumento de patrimônio com alta rentabilidade<br>
+            </div>
+            <div class="question">
+                <label>Qual é a sua tolerância a riscos financeiros?</label><br>
+                <input type="radio" name="tolerancia" value="0" required> Não tolero perdas<br>
+                <input type="radio" name="tolerancia" value="1" required> Tolerância a pequenas perdas<br>
+                <input type="radio" name="tolerancia" value="2" required> Tolerância a perdas moderadas<br>
+                <input type="radio" name="tolerancia" value="3" required> Tolerância a perdas significativas<br>
+            </div>
+            <div class="question">
+                <label>Por quanto tempo você pretende manter seus investimentos?</label><br>
+                <input type="radio" name="tempo" value="0" required> Menos de 1 ano<br>
+                <input type="radio" name="tempo" value="1" required> Entre 1 e 3 anos<br>
+                <input type="radio" name="tempo" value="2" required> Entre 3 e 5 anos<br>
+                <input type="radio" name="tempo" value="3" required> Mais de 5 anos<br>
+            </div>
+            <div class="question">
+                <label>Qual a proporção de sua renda anual você está disposto a investir?</label><br>
+                <input type="radio" name="renda" value="0" required> Menos de 10%<br>
+                <input type="radio" name="renda" value="1" required> Entre 10% e 25%<br>
+                <input type="radio" name="renda" value="2" required> Entre 25% e 50%<br>
+                <input type="radio" name="renda" value="3" required> Mais de 50%<br>
+            </div>
+            <div class="question">
+                <label>Em situações de mercado volátil, qual seria sua reação mais provável?</label><br>
+                <input type="radio" name="reacao" value="0" required> Vender todos os investimentos<br>
+                <input type="radio" name="reacao" value="1" required> Vender parte dos investimentos<br>
+                <input type="radio" name="reacao" value="2" required> Manter os investimentos<br>
+                <input type="radio" name="reacao" value="3" required> Comprar mais investimentos<br>
+            </div>
+            <button type="button" onclick="calcularPerfil()">Calcular Perfil</button>
+        </form>
+        <div id="resultado" class="signature"></div>
+    </div>
+
+    <script>
+        function calcularPerfil() {
+            var form = document.getElementById('investorForm');
+            var formData = new FormData(form);
+            var nome = formData.get('nome');
+            var cpf = formData.get('cpf');
+            var dataNascimento = formData.get('dataNascimento');
+            var assinatura = formData.get('assinatura');
+            var pontos = {
+                idade: parseInt(formData.get('idade')),
+                conhecimento: parseInt(formData.get('conhecimento')),
+                objetivo: parseInt(formData.get('objetivo')),
+                tolerancia: parseInt(formData.get('tolerancia')),
+                tempo: parseInt(formData.get('tempo')),
+                renda: parseInt(formData.get('renda')),
+                reacao: parseInt(formData.get('reacao'))
+            };
+
+            var pontuacaoTotal = pontos.idade + pontos.conhecimento + pontos.objetivo + pontos.tolerancia + pontos.tempo + pontos.renda + pontos.reacao;
+            var perfil = '';
+
+            if (pontuacaoTotal <= 6) {
+                perfil = "Conservador";
+            } else if (pontuacaoTotal <= 14) {
+                perfil = "Moderado";
+            } else {
+                perfil = "Arrojado";
+            }
+
+            document.getElementById('resultado').innerHTML = `
+                <p>Cliente: ${nome}</p>
+                <p>CPF: ${cpf}</p>
+                <p>Data de Nascimento: ${dataNascimento}</p>
+                <p>Assinatura: ${assinatura}</p>
+                <p>Perfil do Investidor: ${perfil}</p>
+                <p>Pontuação Total: ${pontuacaoTotal}</p>
+                <div class="signature-line">
+                    <p>Local: _________________________</p>
+                    <p>Data: __________________________</p>
+                    <p>Assinatura: _____________________</p>
+                </div>
+                <button onclick="window.print()">Imprimir</button>
+            `;
+        }
+    </script>
+</body>
+</html>
